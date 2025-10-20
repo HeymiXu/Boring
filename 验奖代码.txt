@@ -1,0 +1,197 @@
+Function findwin()
+
+Dim redNum As Integer
+Dim isBlue As Boolean
+Dim winType As Integer
+
+Dim sameNum As Boolean
+Dim exNum As Boolean
+Dim isWrongNum As Boolean
+Dim wrongMessage As String
+
+Dim isNull1 As Boolean
+
+'判断一注情况下是否为空
+isNull1 = False
+For i = 2 To 4 Step 1
+
+    For j = 2 To 8 Step 1
+        If Cells(i, j) = "" Then
+            isNull1 = True
+        End If
+    Next j
+
+Next i
+
+If isNull1 Then
+    MsgBox ("填写不完整，无法执行！")
+Else
+
+'验奖
+For i = 2 To 8 Step 1
+
+    
+    If i <> 3 Then
+    
+    
+    '校验号码球
+    isWrongNum = False
+    sameNum = False
+    exNum = False
+    
+    For j = 2 To 7 Step 1
+        If Not (Cells(i, j) >= 1 And Cells(i, j) <= 33) Then
+            isWrongNum = True
+            exNum = True
+            Cells(i, j).Interior.Color = RGB(255, 192, 0)
+        End If
+        
+        For k = 2 To 7 Step 1
+            If j <> k Then
+                If Cells(i, j) = Cells(i, k) Then
+                    isWrongNum = True
+                    sameNum = True
+                    Cells(i, j).Interior.Color = 65535
+                    Cells(i, k).Interior.Color = 65535
+                End If
+            End If
+        Next k
+        
+    Next j
+    
+    If Not (Cells(i, 8) >= 1 And Cells(i, 8) <= 16) Then
+        isWrongNum = True
+            exNum = True
+            Cells(i, 8).Interior.Color = RGB(255, 192, 0)
+    End If
+    
+    If isWrongNum Then
+        If sameNum And exNum Then
+            wrongMessage = "给出的号码球数字超出范围且有相同号码！"
+        ElseIf sameNum Then
+            wrongMessage = "给出的号码球有相同号码！"
+        Else
+            wrongMessage = "给出的号码球数字超出范围！"
+        End If
+        
+        MsgBox (wrongMessage)
+        
+    End If
+
+    '初始化变量
+    redNum = 0
+    isBlue = False
+    winType = 0
+    
+    If (Not isWrongNum) And i > 3 Then
+    
+    For j = 2 To 7 Step 1
+        
+        For k = 2 To 7 Step 1
+        
+        '计算红球
+        If Cells(i, j) = Cells(2, k) Then
+        Cells(i, j).Interior.Color = RGB(242, 220, 219)
+            redNum = redNum + 1
+        End If
+        
+        Next k
+        
+    Next j
+    
+    End If
+    
+    If i > 3 Then
+    
+    '计算篮球
+    If Cells(i, 8) = Cells(2, 8) Then
+        isBlue = True
+        Cells(i, 8).Interior.Color = RGB(183, 222, 232)
+    End If
+    
+    
+    '写入匹配数量
+    Cells(i, 9) = redNum
+    Cells(i, 10) = isBlue
+    
+    
+    '计算几等奖
+    If isBlue Then
+        If redNum = 6 Then
+            winType = 1
+        End If
+        
+        If redNum = 5 Then
+            winType = 3
+        End If
+        
+        If redNum = 4 Then
+            winType = 4
+        End If
+        
+        If redNum = 3 Then
+            winType = 5
+        End If
+        
+        If redNum < 3 Then
+            winType = 6
+        End If
+    Else
+        If redNum = 6 Then
+            winType = 2
+        End If
+        
+        If redNum = 5 Then
+            winType = 4
+        End If
+        
+        If redNum = 4 Then
+            winType = 5
+        End If
+        
+    End If
+    
+'废除写法 2025/04/07 by xhy
+'    If isBlue And redNum < 3 Then
+'        winType = 6
+'    ElseIf isBlue And redNum = 5 Then
+'        winType = 3
+'    ElseIf isBlue And redNum = 6 Then
+'        winType = 1
+'    ElseIf redNum = 4 Or (isBlue And redNum = 3) Then
+'        winType = 5
+'    ElseIf redNum = 5 Or (isBlue And redNum = 4) Then
+'        winType = 4
+'    ElseIf redNum = 6 Then
+'        winType = 2
+'    End If
+    
+    '写入奖项
+   Select Case winType
+    Case 0
+        Cells(i, 11) = "未中奖"
+    Case 1
+        Cells(i, 11) = "一等奖"
+    Case 2
+        Cells(i, 11) = "二等奖"
+    Case 3
+        Cells(i, 11) = "三等奖"
+    Case 4
+        Cells(i, 11) = "四等奖"
+    Case 5
+        Cells(i, 11) = "五等奖"
+    Case 6
+        Cells(i, 11) = "六等奖"
+    End Select
+    
+    
+    End If
+    
+    
+    End If
+Next i
+
+End If
+End Function
+
+

@@ -1,0 +1,94 @@
+Function RN()
+
+Dim rNumbers(1 To 7) As Currency
+'Dim r1 As Integer
+'Dim r2 As Integer
+'Dim r3 As Integer
+'Dim r4 As Integer
+'Dim r5 As Integer
+'Dim r6 As Integer
+'Dim r7 As Integer
+Dim temp As Integer
+Dim sumalone As Integer
+sumalone = 0
+Dim isAlone As Boolean
+isAlone = False
+Dim textrn As String
+
+
+'每一注的数字
+For i = 1 To 5 Step 1
+    '初始化
+    For l = 1 To 7 Step 1
+        rNumbers(l) = 0
+    Next l
+    
+    'r1 = Application.WorksheetFunction.RandBetween(1, 33)
+    ' r2 = Application.WorksheetFunction.RandBetween(1, 33)
+    ' r3 = Application.WorksheetFunction.RandBetween(1, 33)
+   '  r4 = Application.WorksheetFunction.RandBetween(1, 33)
+   '  r5 = Application.WorksheetFunction.RandBetween(1, 33)
+   '  r6 = Application.WorksheetFunction.RandBetween(1, 33)
+   '  r7 = Application.WorksheetFunction.RandBetween(1, 16)
+    'If r1 > r2 Then
+    ' temp = r1
+    ' r1 = r2
+    ' r2 = temp
+   
+    '赋值随机数(双色球摇号)
+    For j = 1 To 6 Step 1
+        sumalone = 0
+       
+       '无限循环直到没有重复数字
+       Do Until isAlone = True
+        rNumbers(j) = Application.WorksheetFunction.RandBetween(1, 33)
+        sumalone = 0
+        For h = 1 To 6 Step 1
+        If j <> h Then
+        If rNumbers(j) = rNumbers(h) Then
+            isAlone = False
+            'rNumbers(j) = Application.WorksheetFunction.RandBetween(1, 33)
+            sumalone = 0
+            Exit For
+        Else
+            sumalone = sumalone + 1
+            If sumalone >= 5 Then
+                isAlone = True
+                sumalone = 0
+                Exit Do
+            End If
+        End If
+        End If
+        
+        
+        Next h
+        
+        Loop
+        
+        isAlone = False
+        
+    Next j
+    
+        rNumbers(7) = Application.WorksheetFunction.RandBetween(1, 16)
+    
+    '冒泡排序
+    For m = 1 To 5 Step 1
+        For n = 1 To 5 Step 1
+        If rNumbers(n) > rNumbers(n + 1) Then
+            temp = rNumbers(n)
+            rNumbers(n) = rNumbers(n + 1)
+            rNumbers(n + 1) = temp
+        End If
+        Next n
+    Next m
+    
+    '将排好序的双色球填入
+    For k = 1 To 7 Step 1
+        textrn = rNumbers(k)
+        Cells(i + 1, k + 1) = textrn
+    Next k
+    
+    
+Next i
+
+End Function
