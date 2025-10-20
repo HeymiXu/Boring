@@ -1,2 +1,2 @@
 # Boring
-something boring
+双色球自动选票，双色球中奖校验（半自动，需手动填入当期号码）
